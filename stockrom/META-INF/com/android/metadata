@@ -1,0 +1,3 @@
+post-build=samsung/cm_ms013g/ms013g:6.0.1/M4B30X/71b0064fe2:userdebug/test-keys
+post-timestamp=1477116104
+pre-device=ms013g

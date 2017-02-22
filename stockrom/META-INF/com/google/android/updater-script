@@ -1,0 +1,38 @@
+assert(getprop("ro.product.device") == "ms013g" || getprop("ro.build.product") == "ms013g" || abort("This package is for device: ms013g; this device is " + getprop("ro.product.device") + "."););
+ui_print("Target: samsung/cm_ms013g/ms013g:6.0.1/M4B30X/71b0064fe2:userdebug/test-keys");
+ifelse(is_mounted("/system"), unmount("/system"));
+package_extract_dir("install", "/tmp/install");
+set_metadata_recursive("/tmp/install", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
+set_metadata_recursive("/tmp/install/bin", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "");
+run_program("/tmp/install/bin/backuptool.sh", "backup");
+unmount("/system");
+if is_mounted("/data") then
+package_extract_file("META-INF/org/cyanogenmod/releasekey", "/tmp/releasekey");
+run_program("/tmp/install/bin/otasigcheck.sh") != "31744" || abort("Can't install this package on top of incompatible data. Please try another package or run a factory reset");
+else
+mount("f2fs", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/userdata", "/data", "");
+package_extract_file("META-INF/org/cyanogenmod/releasekey", "/tmp/releasekey");
+run_program("/tmp/install/bin/otasigcheck.sh") != "31744" || abort("Can't install this package on top of incompatible data. Please try another package or run a factory reset");
+unmount("/data");
+endif;
+show_progress(0.750000, 0);
+ui_print("Patching system image unconditionally...");
+block_image_update("/dev/block/platform/msm_sdcc.1/by-name/system", package_extract_file("system.transfer.list"), "system.new.dat", "system.patch.dat");
+ui_print("Verifying the updated system image...");
+if range_sha1("/dev/block/platform/msm_sdcc.1/by-name/system", "46,0,32770,32881,32883,33392,65535,65536,65538,98304,98306,98417,98419,98928,131071,131072,131074,163840,163842,163953,163955,164464,196607,196608,196610,229376,229378,229489,229491,230000,242111,262144,262146,294912,294914,295025,295027,327680,327682,360448,360450,393216,393218,425984,425986,426495,455679") == "3b7fd2bed2586ac59667d8fa7cebe989aa7f582c" then
+if range_sha1("/dev/block/platform/msm_sdcc.1/by-name/system", "64,32770,32881,32883,33392,65535,65536,65538,66050,97792,98304,98306,98417,98419,98928,131071,131072,131074,131586,163328,163840,163842,163953,163955,164464,196607,196608,196610,197122,228864,229376,229378,229489,229491,230000,242111,242623,261632,262144,262146,262658,294400,294912,294914,295025,295027,295539,327168,327680,327682,328194,359936,360448,360450,360962,392704,393216,393218,393730,425472,425984,425986,426495,455679,455680") == "a38799bd61d4f4754f701def80ba7830265536c1" then
+ui_print("Verified the updated system image.");
+else
+  abort("system partition has unexpected non-zero contents after OTA update");
+endif;
+else
+  abort("system partition has unexpected contents after OTA update");
+endif;
+show_progress(0.020000, 10);
+mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "");
+run_program("/tmp/install/bin/backuptool.sh", "restore");
+unmount("/system");
+show_progress(0.050000, 5);
+package_extract_file("boot.img", "/dev/block/platform/msm_sdcc.1/by-name/boot");
+show_progress(0.200000, 10);
