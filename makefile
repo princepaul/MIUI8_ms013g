@@ -1,5 +1,5 @@
 #
-# Makefile for Falcon
+# Makefile for Galaxy Grand 2
 #
 
 PORT_PRODUCT = ms013g_global
