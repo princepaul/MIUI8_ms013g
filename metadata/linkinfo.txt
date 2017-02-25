@@ -11,8 +11,7 @@ system/app/PicoTts/lib/arm/libttspico.so|/system/lib/libttspico.so
 system/app/PrintSpooler/lib/arm/libprintspooler_jni.so|/system/lib/libprintspooler_jni.so
 system/app/Terminal/lib/arm/libjni_terminal.so|/system/lib/libjni_terminal.so
 system/bin/acpi|toybox
-system/bin/app_process|/system/xbin/daemonsu
-system/bin/app_process32|/system/xbin/daemonsu
+system/bin/app_process|app_process32
 system/bin/arp|toybox
 system/bin/base64|toybox
 system/bin/basename|toybox
