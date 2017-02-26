@@ -8,18 +8,16 @@ private-phone-apps := \
 	BluetoothMidiService \
 	CertInstaller \
 	com.qualcomm.location \
-	com.qualcomm.services.location \
 	KeyChain \
 	LiveWallpapers \
 	PacProcessor \
 	PicoTts \
 	PrintSpooler \
-	qcrilmsgtunnel \
 	Stk \
 	telresources \
 	TimeService \
 	UserDictionaryProvider \
-	WAPPushManager 
+	WAPPushManager
 
 private-phone-priv-apps := \
 	AudioFX \
@@ -37,4 +35,4 @@ private-phone-priv-apps := \
 	SharedStorageBackup \
 	Shell \
 	StatementService \
-	TeleService 
+	TeleService
