@@ -1,5 +1,5 @@
 #
-# Makefile for Galaxy Grand 2
+## Makefile for Galaxy Grand 2
 #
 
 PORT_PRODUCT = ms013g_global
@@ -8,7 +8,7 @@ PORT_PRODUCT = ms013g_global
 local-zip-file     := stockrom.zip
 
 # The output zip file of MIUI rom, the default is porting_miui.zip if not specified
-local-out-zip-file := MIUI8_Falcon.zip
+local-out-zip-file := MIUI8_ms013g.zip
 
 # The location for local-ota to save target-file
 local-previous-target-dir :=
@@ -19,9 +19,9 @@ local-modified-apps :=
 local-modified-jars := org.cyanogenmod.platform
 
 # All apks from MIUI
-local-miui-removed-apps :=
+local-miui-removed-apps := AMAPNetworkLocation FM GameCenter MiGameCenterSDKService MiLivetalk Mipay MiuiSuperMarket MiuiVideo MiuiVoip QuickSearchBox SogouInput SystemAdSolution WebViewGoogle XiaomiVip XMPass
 
-local-miui-modified-apps :=
+local-miui-modified-apps := InCallUI MiuiSystemUI TeleService
 
 # Config density for co-developers to use the aaps with HDPI or XHDPI resource,
 # Default configrations are HDPI for ics branch and XHDPI for jellybean branch
@@ -54,6 +54,25 @@ include $(PORT_BUILD)/porting.mk
 #pre_install_data_packages := $(TMP_DIR)/pre_install_apk_pkgname.txt
 local-pre-zip-misc:
 	$(TOOLS_DIR)/post_process_props.py out/ZIP/system/build.prop other/build.prop
+	cp -rf other/system $(ZIP_DIR)/
 	@echo goodbye! miui prebuilt binaries!
-	$(hide) rm -rf $(ZIP_DIR)/system/bin/app_process32_vendor
-	$(hide) cp -rf stockrom/system/bin/app_process32 $(ZIP_DIR)/system/bin/app_process32
+	rm -rf $(ZIP_DIR)/system/bin/app_process32_vendor
+	cp -rf stockrom/system/bin/app_process32 $(ZIP_DIR)/system/bin/app_process32
+	@echo remove unnecessary libs!
+	rm -rf $(ZIP_DIR)/system/lib64
+	rm -rf $(ZIP_DIR)/system/lib/libDecRes_sdk.so
+	rm -rf $(ZIP_DIR)/system/lib/libapssdk.so
+	rm -rf $(ZIP_DIR)/system/lib/libjni_eglfence.so
+	rm -rf $(ZIP_DIR)/system/lib/libjni_filtershow_filters.so
+	rm -rf $(ZIP_DIR)/system/lib/libjni_jpegstream.so
+	rm -rf $(ZIP_DIR)/system/lib/libjni_latinime.so
+	rm -rf $(ZIP_DIR)/system/lib/libjni_terminal.so
+	rm -rf $(ZIP_DIR)/system/lib/librsjni.so
+	rm -rf $(ZIP_DIR)/system/lib/libminivenus.so
+	rm -rf $(ZIP_DIR)/system/lib/libmresearch.so
+	rm -rf $(ZIP_DIR)/system/lib/libsecurities_sdk.so
+	rm -rf $(ZIP_DIR)/system/lib/libwebp.so
+	rm -rf $(ZIP_DIR)/system/lib/libweibosdkcore_sogou.so
+	rm -rf $(ZIP_DIR)/system/lib/libxmpass_sdk_patcher.so
+	rm -rf $(ZIP_DIR)/system/lib/xmpass_libweibosdkcore.so
+
