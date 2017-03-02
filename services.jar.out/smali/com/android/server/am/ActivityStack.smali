@@ -4652,6 +4652,8 @@
 
     invoke-interface {v3, v4, v5, v6, v0}, Landroid/app/IApplicationThread;->scheduleResumeActivity(Landroid/os/IBinder;IZLandroid/os/Bundle;)V
 
+    invoke-static/range {v4 .. v4}, Lcom/android/server/am/PreventRunningUtils;->onResumeActivity(Landroid/os/IBinder;)V
+
     .line 1980
     move-object/from16 v0, p0
 
@@ -6903,6 +6905,8 @@
 
     .line 3463
     invoke-interface {v5, v6, v7, v8}, Landroid/app/IApplicationThread;->scheduleDestroyActivity(Landroid/os/IBinder;ZI)V
+
+    invoke-static/range {v6 .. v6}, Lcom/android/server/am/PreventRunningUtils;->onDestroyActivity(Landroid/os/IBinder;)V
     :try_end_0
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
 
@@ -13800,6 +13804,8 @@
 
     .line 3659
     const/16 v8, 0x7531
+
+    const-string/jumbo v8, "proc died without state saved"
 
     invoke-static {v4, v8}, Lcom/android/server/am/ActivityStackHook;->writeAmFinishActivityEventLog(Lcom/android/server/am/ActivityRecord;Ljava/lang/String;)V
 
